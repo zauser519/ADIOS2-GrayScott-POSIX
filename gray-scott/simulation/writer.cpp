@@ -14,7 +14,7 @@ Writer::Writer(const Settings &settings, const GrayScott &sim)
 
 void Writer::Wopen(const std::string &fname)
 {
-    int fd = open(fname, O_CREAT | O_WRONLY, 0644);
+    fd = open(fname.c_str(), O_CREATE | O_WRONLY, 0644);
 }
 
 void Writer::Wwrite(int step, const GrayScott &sim, int fd)
@@ -29,8 +29,8 @@ void Writer::Wwrite(int step, const GrayScott &sim, int fd)
 
      //Write file into data.0
      write(fd, &step, sizeof(int));
-     write(fd, u.data(), sizeof(u.size() * sizeof(double)));
-     write(fd, v.data(), sizeof(v.size() * sizeof(double)));
+     write(fd, u.data(), u.size() * sizeof(double));
+     write(fd, v.data(), v.size() * sizeof(double));
 
 }
 
