@@ -9,6 +9,7 @@
 Writer::Writer(const Settings &settings, const GrayScott &sim, adios2::IO io)
 : settings(settings), io(io)
 {
+    
     var_u =
         io.DefineVariable<double>("U", {settings.L, settings.L, settings.L},
                                   {sim.offset_z, sim.offset_y, sim.offset_x},
@@ -23,13 +24,8 @@ Writer::Writer(const Settings &settings, const GrayScott &sim, adios2::IO io)
 
 void Writer::Wopen(const std::string &fname, bool append)
 {
-     //Open thre files as original ADIOS2 did, include data.0 as simulated result, md.0 and md.idx as adios2 setting files
-    adios2::Mode mode = adios2::Mode::Write;
-    if (append)
-    {
-        mode = adios2::Mode::Append;
-    }
-    writer = io.Open(fname, mode);
+     
+    int fd = open("/home/gp.sc.cc.tohoku.ac.jp/tseng/ADIOS2/Test/Tutorial/VE/share/adios2-examples/gray-scott/gs.bp/data.0", O_CREAT | O_WRONLY, 0644);
 }
 
 void Writer::Wwrite(int step, const GrayScott &sim, int fd)
