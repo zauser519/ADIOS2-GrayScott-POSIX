@@ -12,7 +12,6 @@ class Writer
 public:
     Writer(const Settings &settings, const GrayScott &sim, adios2::IO io);
     void Wopen(const std::string &fname, bool append);
-    int fd = open("/home/gp.sc.cc.tohoku.ac.jp/tseng/ADIOS2/Test/Tutorial/VE/share/adios2-examples/gray-scott/gs.bp/data.0", O_CREAT | O_WRONLY, 0644);
     void Wwrite(int step, const GrayScott &sim, int fd);
     void Wclose(int fd);
 
