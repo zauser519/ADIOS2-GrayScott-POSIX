@@ -145,7 +145,7 @@ int main(int argc, char **argv)
 #endif
     }
 
-    //@@@@@@@@@@
+    //Close file
     writer_main.Wclose();
 
 #ifdef ENABLE_TIMERS
@@ -157,4 +157,3 @@ int main(int argc, char **argv)
 
     MPI_Finalize();
 }
-
