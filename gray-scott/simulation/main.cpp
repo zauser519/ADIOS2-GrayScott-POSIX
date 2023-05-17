@@ -50,7 +50,7 @@ void print_simulator_settings(const GrayScott &s)
 
 int main(int argc, char **argv)
 {
-    int provided, fd;
+    int provided;
     MPI_Init_thread(&argc, &argv, MPI_THREAD_MULTIPLE, &provided);
     int rank, procs, wrank;
 
