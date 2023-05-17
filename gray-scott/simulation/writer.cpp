@@ -14,10 +14,10 @@ Writer::Writer(const Settings &settings, const GrayScott &sim)
 
 void Writer::Wopen(const std::string &fname)
 {
-    fd = open(fname.c_str(), O_CREATE | O_WRONLY, 0644);
+    fd = open(fname.c_str(), O_CREAT | O_WRONLY, 0644);
 }
 
-void Writer::Wwrite(int step, const GrayScott &sim, int fd)
+void Writer::Wwrite(int step, const GrayScott &sim)
 {
     if (!sim.size_x || !sim.size_y || !sim.size_z)
     {
@@ -34,7 +34,7 @@ void Writer::Wwrite(int step, const GrayScott &sim, int fd)
 
 }
 
-void Writer::Wclose(int fd) 
+void Writer::Wclose() 
 { 
     //POSIX close file
     close(fd);
