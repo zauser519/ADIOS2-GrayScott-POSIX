@@ -12,7 +12,7 @@ class Writer
 public:
     Writer(const Settings &settings, const GrayScott &sim);
     void Wopen(const std::string &fname);
-    void Wwrite(int step, const GrayScott &sim);
+    void Wwrite(int step, const GrayScott &sim, int total);
     void Wclose();
 
 protected:
