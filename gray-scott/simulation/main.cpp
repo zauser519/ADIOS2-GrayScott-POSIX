@@ -130,7 +130,10 @@ int main(int argc, char **argv)
             }
 
             //Write is here
-            writer_main.Wwrite(it, sim);
+            // Get the sum of all ranks up to the one before mine and print it
+            int total;
+            MPI_Exscan(&rank, &total, 1, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
+            writer_main.Wwrite(it, sim, total);
         }
 
 
@@ -157,3 +160,4 @@ int main(int argc, char **argv)
 
     MPI_Finalize();
 }
+
