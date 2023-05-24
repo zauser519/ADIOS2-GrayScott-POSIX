@@ -19,9 +19,10 @@ protected:
     //write mode
     int fd;
     //exscan, for each step
-    int perrank, writen_thisprocessor;
+    size_t perrank, writen_thisprocessor;
     //allreduce, for steps
-    long long perstep=0, writen_thisstep;
+    size_t perstep, writen_thisstep;
+
     Settings settings;
 };
 
