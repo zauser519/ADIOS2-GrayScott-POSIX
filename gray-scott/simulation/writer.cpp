@@ -15,6 +15,7 @@ Writer::Writer(const Settings &settings, const GrayScott &sim)
 void Writer::Wopen(const std::string &fname)
 {
     fd = open(fname.c_str(), O_CREAT | O_WRONLY, 0644);
+    perstep = 0;
 }
 
 void Writer::Wwrite(int step, const GrayScott &sim, MPI_Comm comm, int rank)
@@ -37,8 +38,8 @@ void Writer::Wwrite(int step, const GrayScott &sim, MPI_Comm comm, int rank)
     write(fd, &step, sizeof(int));
     write(fd, u.data(), u.size() * sizeof(double));
     write(fd, v.data(), v.size() * sizeof(double));
-    MPI_Exscan(&writen_thisprocessor, &perrank, 1, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
-    MPI_Allreduce(&writen_thisprocessor, &writen_thisstep, 1, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
+    MPI_Exscan(&writen_thisprocessor, &perrank, 1, MPI_UNSIGNED_LONG, MPI_SUM, MPI_COMM_WORLD);
+    MPI_Allreduce(&writen_thisprocessor, &writen_thisstep, 1, MPI_UNSIGNED_LONG, MPI_SUM, MPI_COMM_WORLD);
     std::cout << "In rank " << rank  
       << " u size is " << u.size() * sizeof(double)
       << " v size is " << v.size() * sizeof(double)
