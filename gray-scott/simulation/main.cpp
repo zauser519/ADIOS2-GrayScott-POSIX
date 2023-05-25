@@ -114,6 +114,8 @@ int main(int argc, char **argv)
         sim.iterate();
         it++;
 
+        
+
 #ifdef ENABLE_TIMERS
         timer_compute.stop();
         MPI_Barrier(comm);
@@ -130,7 +132,8 @@ int main(int argc, char **argv)
             }
 
             //Write is here
-            writer_main.Wwrite(it, sim);
+            // Get the sum of all ranks up to the one before mine and print it
+            writer_main.Wwrite(it, sim, MPI_COMM_WORLD, rank);
         }
 
 
