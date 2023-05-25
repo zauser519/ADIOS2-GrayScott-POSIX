@@ -12,6 +12,7 @@ class Writer
 public:
     Writer(const Settings &settings, const GrayScott &sim);
     void Wopen(const std::string &fname);
+    void fast_write(int step, std::vector<double> u, std::vector<double> v, size_t perrank, size_t perstep, int fd);
     void Wwrite(int step, const GrayScott &sim, MPI_Comm comm, int rank);
     void Wclose();
 
@@ -26,8 +27,6 @@ protected:
 
     Settings settings;
 
-private:
-    void fast_write(int step, double u, double v)
 };
 
 #endif
