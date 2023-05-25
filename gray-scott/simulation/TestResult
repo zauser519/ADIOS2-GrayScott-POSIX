@@ -1,0 +1,22 @@
+========================================
+grid:             200x200x200
+restart:          no
+steps:            1000
+plotgap:          10
+F:                0.01
+k:                0.05
+dt:               2
+Du:               0.2
+Dv:               0.1
+noise:            1e-07
+output:           gs.bp
+adios_config:     adios2.xml
+process layout:   2x2x1
+local grid size:  100x100x200
+========================================
+Simulation at step 10 writing output step     1
+muffin: mpid(0): process_comm abort; connection down to socket s=5
+
+MPI process (universe 0, rank 1) terminated by signal(11); Segmentation violation (dumped to core.734683)
+MPI process (universe = 0, rank = 1) terminated by signal(11)
+muffin: mpid(0): Program terminated unexpectedly
