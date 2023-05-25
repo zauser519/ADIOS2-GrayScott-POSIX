@@ -17,33 +17,16 @@ void Writer::Wopen(const std::string &fname)
     fd = open(fname.c_str(), O_CREAT | O_WRONLY, 0644);
 }
 
-void  Writer::fast_write(int step, std::vector<double> u, std::vector<double> v, size_t perrank, size_t perstep, int fd)
+void  Writer::fast_write(void *buf, size_t size)
 {
-  ssize_t bytes_remaining_step = sizeof(int);
-  ssize_t bytes_remaining_u = u.size() * sizeof(double);
-  ssize_t bytes_remaining_v = v.size() * sizeof(double);
-  //lseek(fd, perrank + perstep, SEEK_SET);
-  char *ptr = reinterpret_cast<char *>(perrank + perstep);
-  while (bytes_remaining_step > 0) 
+  ssize_t bytes_remaining = size;
+  char *ptr = reinterpret_cast<char *>(buf);
+  while (bytes_remaining > 0) 
   {
-    ssize_t bytes_written_step = write(fd, ptr, bytes_remaining_step);
+    ssize_t bytes_written = write(fd, ptr, bytes_remaining);
 
-    ptr += bytes_written_step;
-    bytes_remaining_step -= bytes_written_step;
-  }
-  while (bytes_remaining_u > 0) 
-  {
-    ssize_t bytes_written_u = write(fd, ptr, bytes_remaining_u);
-
-    ptr += bytes_written_u;
-    bytes_remaining_u -= bytes_written_u;
-  }
-  while (bytes_remaining_v > 0) 
-  {
-    ssize_t bytes_written_v = write(fd, ptr, bytes_remaining_v);
-
-    ptr += bytes_written_v;
-    bytes_remaining_v -= bytes_written_v;
+    ptr += bytes_written;
+    bytes_remaining -= bytes_written;
   }
 }
 
@@ -60,7 +43,9 @@ void Writer::Wwrite(int step, const GrayScott &sim, MPI_Comm comm, int rank)
     //pointer
     perrank=0;
     writen_thisstep=0;
-    fast_write(step,u,v, perrank, perstep, fd);
+    fast_write(&step, sizeof(int));
+    fast_write(u.data(), u.size() * sizeof(double));
+    fast_write(v.data(), v.size() * sizeof(double));
     writen_thisprocessor = u.size() * sizeof(double) + v.size() * sizeof(double) + sizeof(int);
     MPI_Exscan(&writen_thisprocessor, &perrank, 1, MPI_UNSIGNED_LONG, MPI_SUM, MPI_COMM_WORLD);
     MPI_Allreduce(&writen_thisprocessor, &writen_thisstep, 1, MPI_UNSIGNED_LONG, MPI_SUM, MPI_COMM_WORLD);
