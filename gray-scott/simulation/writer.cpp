@@ -43,15 +43,17 @@ void Writer::Wwrite(int step, const GrayScott &sim, MPI_Comm comm, int rank)
     //pointer
     perrank=0;
     writen_thisstep=0;
-    lseek(fd, perrank+perstep, SEEK_SET);
     //prevent write repeatly
     if (perrank==0){
       fast_write(&step, sizeof(int));
     }
-    fast_write(u.data(), u.size() * sizeof(double));
-    fast_write(v.data(), v.size() * sizeof(double));
+    
     writen_thisprocessor = u.size() * sizeof(double) + v.size() * sizeof(double) + sizeof(int);
     MPI_Exscan(&writen_thisprocessor, &perrank, 1, MPI_UNSIGNED_LONG, MPI_SUM, MPI_COMM_WORLD);
+    writen_thisprocessor = u.size() * sizeof(double) + v.size() * sizeof(double) + sizeof(int);
+    lseek(fd, perrank+perstep, SEEK_SET);
+    fast_write(u.data(), u.size() * sizeof(double));
+    fast_write(v.data(), v.size() * sizeof(double));
     MPI_Allreduce(&writen_thisprocessor, &writen_thisstep, 1, MPI_UNSIGNED_LONG, MPI_SUM, MPI_COMM_WORLD);
     std::cout << "In rank " << rank  
       << " u size is " << u.size() * sizeof(double)
