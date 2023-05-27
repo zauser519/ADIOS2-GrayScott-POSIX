@@ -25,6 +25,9 @@ protected:
     size_t perstep=0;
     size_t writen_thisstep;
 
+    //DUMB
+    size_t increase,writenumber=0,writenumberstep,nextnumber=0,plus;
+
     Settings settings;
 
 };
