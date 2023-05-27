@@ -43,6 +43,7 @@ void Writer::Wwrite(int step, const GrayScott &sim, MPI_Comm comm, int rank)
     //pointer
     perrank=0;
     writen_thisstep=0;
+    lseek(fd, perrank+perstep, SEEK_SET);
     fast_write(&step, sizeof(int));
     fast_write(u.data(), u.size() * sizeof(double));
     fast_write(v.data(), v.size() * sizeof(double));
